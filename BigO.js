@@ -435,4 +435,204 @@ console.log(list.search(15))
 list.print()
 list.reverse()
 list.print()
+//A hash table, also known as a hash map, is a data structure that pairs keys with values. 
+//It's efficient for operations like insertion, deletion, and look-up because it uses a hash function to compute an index in an array, where the value is stored.
+class Hashtable{
+    constructor(size){
+        this.table=new Array(size)
+        this.size=size
+    }
+    //hash function converts input value into hash cdoe  then outputs it in unique index
+    //convering key/value to numeric value
+    hash(key){
+        let total=0//this will hold sum ofcharacter values
+        //the for loop goes through each character in the key string
+        for(let i=0; i<key.length;i++){
+            total+=key.charCodeAt(i);//charcodeat gets the unicode(numeric) for each charachter i
+            //adds the charcter code to total so total is sum of the codes
+        }
+        return total%this.size//ensures the character codes are within the range 0to-1
+    }
+    //set adds a key-value pair in hash table
+    set(key, value) {
+        const index = this.hash(key); // calculate index where key-value will be stored
+        let  bucket = this.table[index]; // get the bucket at the calculated index
+    
+        if (!bucket) {
+            bucket = [[key, value]]; // initialize the bucket if it doesn't exist
+          this.table[index]=bucket
+        } else {
+            const findItem = bucket.find(item => item[0] === key); // find if the key already exists
+            if (findItem) {
+                findItem[1] = value; // update value if key is found
+            } else {
+                bucket.push([key, value]); // push new key-value pair if key is not found
+            }
+        }
+    }
+    
 
+    
+    //get is used to retrieve a value with given key
+    get(key){
+        const index=this.hash(key)//find index of key using hash function
+        let bucket=this.hash[index]
+        if(bucket){
+            const findItem = bucket.find(item => item[0] === key); 
+            if(findItem){
+                return findItem[1]
+            }
+        }
+        return undefined
+    }
+    //delete removes a key-value pair
+    delete(key){
+        const index=this.hash(key)//check index
+        let bucket=this.hash[index]
+        if(bucket){
+            const findItem = bucket.find(item => item[0] === key);
+            bucket.splice(bucket.indexOf(findItem),1)
+        }
+    }
+    display(){
+        for(let i=0;i<this.table.length;i++){
+            if(this.table[i]){
+                console.log(i, this.table[i])
+            }
+        }
+    }
+}
+const hash=new Hashtable(50)
+hash.set("name","Moh")
+hash.set("age","23")
+hash.set("name","Bobo")
+hash.set('id',"4002259")
+hash.delete("age")
+hash.display()
+//binary tree is a tree containing att most 2 children
+//a binary search tree is a binary tree where left cildren is left tan parent node and right is greater than parent node
+//it has two nodes left and right
+class binaryNodes{
+    constructor(value){
+        this.value=value
+        this.left=null
+        this.right=null
+    }
+}
+//bst class
+class binarySearchTree{
+    constructor(){
+        this.root=null
+    }
+    isEmpty(){
+        return this.root===null
+    }
+    insert(value){
+       const bNode=new binaryNodes(value)
+       if(this.isEmpty()){
+        this.root=bNode
+       }else{
+        return this.insertNode(this.root,bNode)
+       }
+    }
+    //insernode function
+    insertNode(root,bNode){
+        if(bNode.value<root.value){
+            if(root.left===null){
+                root.left=bNode
+            }else{
+                return this.insertNode(root.left,bNode)
+            }
+        }else{
+            
+                if(root.right===null){
+                    root.right=bNode
+                }else{
+                    return this.insertNode(root.right,bNode)
+                
+            }
+        }
+    }
+    search(root,value){
+        if(root===null){
+            return false;
+        }else if(value===root.value){
+        return true
+        }
+        else if(value<root.value){
+            return this.search(root.left,value)
+        }else{
+            return this.search(root.right,value)
+        }
+    }
+    //deep first search is trasversal method
+    //preorder starts at root then left then right
+    preOrder(root){
+        if(!root)return;
+            console.log(root.value)
+            this.preOrder(root.left)
+            this.preOrder(root.right)
+        
+    }
+    //inorder is left-root-right
+    inorder(root){
+        if(!root)return
+        this.inorder(root.left)
+        console.log(root.value)
+        this.inorder(root.right)
+    }
+    //postorder left-right-root
+    postorder(root){
+        if(!root)return
+        this.inorder(root.left)
+        this.inorder(root.right)
+        console.log(root.value)
+    }
+    //breadth first searchgoes level by level
+    //implemented using queues
+    Bfs(){
+        if(!this.root)return;
+        const Queue=[]//create queue to hold nodes
+        Queue.push(this.root)//initially the queue contains root node
+        while(Queue.length > 0){
+            const node=Queue.shift()//removes first element in queue and assigns itto node varaible dequeue front element
+            console.log(node.value)//print the dequeued value
+            if(node.left)Queue.push(node.left)//if left node exists enqueue left
+            if(node.right)Queue.push(node.right)
+    }
+}
+//min and max
+min(root){
+    if(!root){
+        return null
+    }
+    if(!root.left){
+        return root.value
+    }else{
+        return this.min(root.left)
+    }
+}
+max(root){
+    if(!root){
+        return null
+    }
+    if(!root.right){
+        return root.value
+    }else{
+        return this.max(root.right)
+    }
+}
+}
+const bst=new binarySearchTree()
+bst.insert(20)
+bst.insert(25)
+bst.insert(15)
+bst.insert(10)
+bst.insert(26)
+//console.log(bst.search(bst.root,29))
+//bst.preOrder(bst.root)
+//bst.inorder(bst.root)
+//bst.postorder(bst.root)
+bst.Bfs()
+bst.min()
+bst.max()
