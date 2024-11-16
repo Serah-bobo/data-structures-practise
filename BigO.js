@@ -622,17 +622,119 @@ max(root){
         return this.max(root.right)
     }
 }
+//deletion
+//use recursion
+delete(value){
+    this.root=this.deleterac(this.root,value)
 }
+deleterac(root,value){
+    if(root===null){
+        return root//it will return null since its empty
+    }
+    if(value<root.value){
+        root.left=this.deleterac(root.left,value)//if less trasverse to left
+    }else if(value>root.value){
+        root.right=this.deleterac(root.right,value)//trasverse to right
+    }else{//if value found
+        if(!root.left&&!root.right){
+            return null//if no child nodes delete leaf
+        }
+        if(!root.left){
+            return root.right//if one  children delete
+        } else if(!root.right){
+            return root.left
+        }
+        root.value=this.min(root.right)//when deleting node with to children use inorder successor
+        root.right=this.deleterac(root.right,root.value)//inorder is the minimum value in righ subtree
+    }
+    return root
+}
+
+
+}
+
 const bst=new binarySearchTree()
 bst.insert(20)
 bst.insert(25)
 bst.insert(15)
 bst.insert(10)
 bst.insert(26)
+
 //console.log(bst.search(bst.root,29))
 //bst.preOrder(bst.root)
 //bst.inorder(bst.root)
 //bst.postorder(bst.root)
-bst.Bfs()
-bst.min()
-bst.max()
+//bst.Bfs()
+//bst.min()
+//bst.max()
+bst.delete(25)
+bst.preOrder(bst.root)
+//graph is a non-linear dst containing infinite vertices connected by edges
+//either directional or undirectional
+//adjacency matrix represents the row and column in a matrix
+const matrix=[
+    [0,1,1],
+    [1,0,0],
+    [1,,0,0]
+]
+console.log(matrix[0][1])//0 is first row 1 is second column
+//adjacency list is map like dst where each vertices strores a list of adjacent vertices
+const adjacencyList={
+    "A":["B"],
+    "B":["A","B"],
+    "C":["A"]
+}
+console.log(adjacencyList["B"])
+//adding edges and vertices
+class Graph{
+    constructor(){
+        this.adjacencylisting={}
+    }
+    //adding vertex
+    addVertex(vertex){
+        if(!this.adjacencylisting[vertex]){//check if vertex exissts
+            this.adjacencylisting[vertex]=new Set()//if not  add it as a key in adjacency list and initialize as empty set
+
+        }
+    }
+    //adding edges
+    addedges(v1,v2){
+        if(!this.adjacencylisting[v1]){//check if vertex 1 and 2 exist
+            this.addVertex(v1)//if not add them
+        }
+        if(!this.adjacencylisting[v2]){
+            this.addVertex(v2)
+        }
+        this.adjacencylisting[v1].add(v2)//add v2 to neighboring of v1
+        this.adjacencylisting[v2].add(v1)
+    }
+    //dispaly
+    display(){
+        for(let vertex in this.adjacencylisting){
+            console.log(vertex +'->'+[...this.adjacencylisting[vertex]])
+        }
+    }
+    //remove edge
+    removeEdge(v1,v2){
+        this.adjacencylisting[v1].delete(v2)
+         this.adjacencylisting[v2].delete(v1)
+    }
+    removeVertex(vertex){
+        if(!this.adjacencylisting[vertex]){
+            return
+        }
+        for(let adjacentvertex in this.adjacencylisting){
+            this.removeEdge(vertex,adjacentvertex)
+        }
+       delete this.adjacencylisting[vertex]
+    }
+}
+const addve=new Graph()
+addve.addVertex("D")
+addve.addVertex("E")
+addve.addVertex("F")
+addve.addedges("D","E")
+addve.addedges("E","F")
+addve.removeEdge("D","E")
+addve.removeVertex("D")
+addve.display()
