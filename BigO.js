@@ -442,8 +442,8 @@ class Hashtable{
         this.table=new Array(size)
         this.size=size
     }
-    //hash function converts input value into hash cdoe  then outputs it in unique index
-    //convering key/value to numeric value
+    //hash function converts input value into hash code  then outputs it in unique index
+    //converting key/value to numeric value
     hash(key){
         let total=0//this will hold sum ofcharacter values
         //the for loop goes through each character in the key string
